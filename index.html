@@ -1,11 +1,96 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <script src="http://jqueryjs.googlecode.com/files/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="demotyper.js"></script
-  </head>
-  <body>
-    <textarea class="input"></textarea>
-    <div class="output"></div>
-  </body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Editor</title>
+  <script src="http://jqueryjs.googlecode.com/files/jquery-1.3.2.min.js" type="text/javascript" charset="utf-8"></script>
+  <style type="text/css" media="screen">
+    body {
+        overflow: hidden;
+    }
+    
+    #editor { 
+        margin: 0;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+  </style>
+</head>
+<body>
+
+<textarea id="hijacker" style="opacity:0%;z-index:5;"></textarea>
+<div style="z-index:5;top:5px;right:20px;position:absolute;">
+  <button id="pause" style="color:blue;font-size:12pt;">Insert pause</button>
+  <button id="record" style="color:blue;font-size:12pt;">Commit</button>
+  <button id="playback" style="color:blue;font-size:12pt;">Begin playback</button>
+</div>
+<pre id="editor"></pre>
+
+<script src="ace-uncompressed-noconflict.js" type="text/javascript" charset="utf-8"></script>
+<script>
+var editor, eventStream = [], allEvents = [];
+var newEventStream = [];
+var script;
+var speed = 50;
+
+var getRedos = function(){
+  return editor.session.getUndoManager().$redoStack;
+}
+var getUndos = function(){
+  return editor.session.getUndoManager().$undoStack;
+}
+
+var record = function(){
+  while(editor.session.getUndoManager().$undoStack.length){
+    editor.undo();
+  }
+  console.log(script = JSON.stringify(editor.session.getUndoManager().$redoStack));
+};
+
+inputScript = function(script){
+  editor.session.getUndoManager().$redoStack = script;
+};
+
+var presses = [];
+var hijackedKeypress = function(event){
+presses.push(event);
+console.log(event);
+  var redos = getRedos();
+  if(redos[0]){
+    if(redos[redos.length-1][0].deltas[0].text !== 'ƒ'){
+      editor.redo();
+    }else if(event.keyCode === 70 && event.altKey){
+      redos.pop();
+    }
+  };
+};
+
+window.onload = function() {
+    editor = ace.edit("editor");
+    editor.setTheme("ace/theme/twilight");
+    editor.getSession().setMode("ace/mode/javascript");
+  $('#record').click(function(){
+    record();
+  });
+  $('#playback').click(function(){
+    $('#hijacker').focus();
+    $('#playback').hide();
+  });
+  $('#pause').click(function(){
+    editor.insert('\ƒ');
+    $('#playback').show();
+  });
+  $('#hijacker').keydown(hijackedKeypress);
+  $('#hijacker').blur(function(){
+    $('#playback').show();
+  });
+};
+
+</script>
+
+</body>
 </html>
