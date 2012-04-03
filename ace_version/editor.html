@@ -23,7 +23,11 @@
 <body>
 
 <textarea id="hijacker" style="opacity:0%;z-index:5;"></textarea>
-<button id="playback" style="z-index:5; color:blue;top:5px;right:20px;position:absolute;font-size:12pt;">Playback Mode!</button>
+<div style="z-index:5;top:5px;right:20px;position:absolute;">
+  <button id="pause" style="color:blue;font-size:12pt;">Insert pause</button>
+  <button id="record" style="color:blue;font-size:12pt;">Commit</button>
+  <button id="playback" style="color:blue;font-size:12pt;">Begin playback</button>
+</div>
 <pre id="editor"></pre>
 
 <script src="src/ace-uncompressed-noconflict.js" type="text/javascript" charset="utf-8"></script>
@@ -40,18 +44,6 @@ var getUndos = function(){
   return editor.session.getUndoManager().$undoStack;
 }
 
-var play = function(){
-  editor.session.getUndoManager().$redoStack = JSON.parse(script);
-  animateRedos();
-};
-
-var animateRedos = function(){
-  getRedos().length && setTimeout(function(){
-    editor.redo();
-    animateRedos();
-  }, speed);
-};
-
 var record = function(){
   while(editor.session.getUndoManager().$undoStack.length){
     editor.undo();
@@ -59,18 +51,38 @@ var record = function(){
   console.log(script = JSON.stringify(editor.session.getUndoManager().$redoStack));
 };
 
+inputScript = function(script){
+  editor.session.getUndoManager().$redoStack = script;
+};
+
+var presses = [];
+var hijackedKeypress = function(event){
+presses.push(event);
+console.log(event);
+  var redos = getRedos();
+  if(redos[0]){
+    if(redos[redos.length-1][0].deltas[0].text !== 'ƒ'){
+      editor.redo();
+    }else if(event.keyCode === 70 && event.altKey){
+      redos.pop();
+    }
+  };
+};
+
 window.onload = function() {
     editor = ace.edit("editor");
     editor.setTheme("ace/theme/twilight");
     editor.getSession().setMode("ace/mode/javascript");
-  $('#playback').click(function(){
+  $('#record').click(function(){
     record();
+  });
+  $('#playback').click(function(){
     $('#hijacker').focus();
     $('#playback').hide();
   });
-  $('#hijacker').keydown(function(){
-    console.log('hijacking');
-    editor.redo();
+  $('#hijacker').keydown(hijackedKeypress);
+  $('#hijacker').blur(function(){
+    $('#playback').show();
   });
 };
 
