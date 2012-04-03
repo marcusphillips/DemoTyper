@@ -80,6 +80,10 @@ window.onload = function() {
     $('#hijacker').focus();
     $('#playback').hide();
   });
+  $('#pause').click(function(){
+    editor.insert('\ƒ');
+    $('#playback').show();
+  });
   $('#hijacker').keydown(hijackedKeypress);
   $('#hijacker').blur(function(){
     $('#playback').show();
