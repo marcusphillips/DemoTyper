@@ -3940,7 +3940,10 @@ var TextInput = function(parentNode, host) {
         // Some browsers support the event.clipboardData API. Use this to get
         // the pasted content which increases speed if pasting a lot of lines.
         if (e.clipboardData && e.clipboardData.getData) {
-            sendText(e.clipboardData.getData("text/plain"));
+            var data = e.clipboardData.getData("text/plain");
+            for (var i=0, len = data.length; i < len; i++) {
+              sendText(data[i]);
+            }
             e.preventDefault();
         } 
         else {
@@ -5675,26 +5678,32 @@ var EditSession = function(text, mode) {
                 self.$informUndoManager.cancel();
 
                 if (self.$deltasFold.length) {
+                  for (var i = 0, len = self.$deltasFold.length; i < len; i++) {
                     self.$deltas.push({
                         group: "fold",
-                        deltas: self.$deltasFold
+                        deltas: [self.$deltasFold[i]]
                     });
                     self.$deltasFold = [];
+                  }
                 }
 
                 if (self.$deltasDoc.length) {
+                  for (var i = 0, len = self.$deltasDoc.length; i < len; i++) {
                     self.$deltas.push({
                         group: "doc",
-                        deltas: self.$deltasDoc
+                        deltas: [self.$deltasDoc[i]]
                     });
+                  }
                     self.$deltasDoc = [];
                 }
 
                 if (self.$deltas.length > 0) {
+                  for (var i = 0, len = self.$deltas.length; i < len; i++) {
                     undoManager.execute({
                         action: "aceupdate",
-                        args: [self.$deltas, self]
+                        args: [[self.$deltas[i]], self]
                     });
+                  }
                 }
 
                 self.$deltas = [];
