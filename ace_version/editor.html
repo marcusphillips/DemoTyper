@@ -22,7 +22,8 @@
 </head>
 <body>
 
-<textarea id="hijacker" style="display:none;"></textarea>
+<textarea id="hijacker" style="opacity:0%;z-index:5;"></textarea>
+<button id="playback" style="z-index:5; color:blue;top:5px;right:20px;position:absolute;font-size:12pt;">Playback Mode!</button>
 <pre id="editor"></pre>
 
 <script src="src/ace-uncompressed-noconflict.js" type="text/javascript" charset="utf-8"></script>
@@ -41,14 +42,6 @@ var getUndos = function(){
 
 var play = function(){
   editor.session.getUndoManager().$redoStack = JSON.parse(script);
-  $.each(getRedos(), function(which, deltas){
-return;
-    $.each(deltas, function(which, delta){
-      $.each(delta.deltas, function(which, delta){
-        delta.range.__proto__ = Range.prototype;
-      });
-    });
-  });
   animateRedos();
 };
 
@@ -70,7 +63,15 @@ window.onload = function() {
     editor = ace.edit("editor");
     editor.setTheme("ace/theme/twilight");
     editor.getSession().setMode("ace/mode/javascript");
-  $('#hijacker').focus();
+  $('#playback').click(function(){
+    record();
+    $('#hijacker').focus();
+    $('#playback').hide();
+  });
+  $('#hijacker').keydown(function(){
+    console.log('hijacking');
+    editor.redo();
+  });
 };
 
 </script>
