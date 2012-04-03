@@ -55,10 +55,7 @@ inputScript = function(script){
   editor.session.getUndoManager().$redoStack = script;
 };
 
-var presses = [];
 var hijackedKeypress = function(event){
-presses.push(event);
-console.log(event);
   var redos = getRedos();
   if(redos[0]){
     if(redos[redos.length-1][0].deltas[0].text !== 'ƒ'){

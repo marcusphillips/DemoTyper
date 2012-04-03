@@ -6,6 +6,9 @@
 ## What is it?
 It's bacially [HackerTyper](http://hackertyper.net) meets [Ace code editor](http://ace.ajax.org/). Pre-record your demo text, then when it's go time you can type any nonsense you want--nothing but perfect code will come out!
 
+## How do I run it?
+In your browser, open the index.html file, in the ace folder
+
 ## Wow!
 I know. Please don't read the source though, just marvel at what it does. We literally wrote this overnight at #JSConf.
 
