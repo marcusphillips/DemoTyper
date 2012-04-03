@@ -4,7 +4,7 @@
 ***
 
 ## What is it?
-It's bacially [HackerTyper](http://hackertyper.net) meets [Ace code editor](http://ace.ajax.org/). Pre-record your demo text, then when it's go time you can type any nonsense you want--nothing but perfect code will come out!
+It's bacially [HackerTyper](http://hackertyper.net) meets [Ace code editor](http://ace.ajax.org/). Pre-record your demo text, then when it's go time you can type any nonsense you want—nothing but perfect code will come out!
 
 ## How do I run it?
 In your browser, open the index.html file, in the ace folder
