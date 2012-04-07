@@ -56,6 +56,11 @@ inputScript = function(script){
 };
 
 var hijackedKeypress = function(event){
+  if (event.keyCode === 8) {
+    editor.undo();
+    return;
+  }
+
   var redos = getRedos();
   if(redos[0]){
     if(redos[redos.length-1][0].deltas[0].text !== 'ƒ'){

@@ -24,7 +24,7 @@ Sort of!
 
 ## TODOS/ideas
 
-- Backspace does an undo for the previous keypress
+- ~~Backspace does an undo for the previous keypress~~
 - Language detection/selection so that ACE properly indents & formats whatever
 you're pasting in
 - Hosted demo
