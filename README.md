@@ -24,10 +24,10 @@ Sort of!
 
 ## TODOS/ideas
 
--Backspace does an undo for the previous keypress
--Language detection/selection so that ACE properly indents & formats whatever
+- Backspace does an undo for the previous keypress
+- Language detection/selection so that ACE properly indents & formats whatever
 you're pasting in
--Hosted demo
--Ability to save demos (pastebin.com style)
--No ACE monkeypatching
--Different speed settings? (type 3 + characters at a time)
+- Hosted demo
+- Ability to save demos (pastebin.com style)
+- No ACE monkeypatching
+- Different speed settings? (type 3 + characters at a time)
